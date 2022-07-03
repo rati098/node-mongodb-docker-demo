@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+        <style>
+            input{
+                border: none;
+                outline: none;
+            }
+            input, button{
+                padding: 5px;
+                margin: 10px;
+            }
+            button{
+                color: white;
+                background-color: black;
+                cursor: pointer;
+            }
+            #save_button,#cancel_button{
+                display: none;
+            }
+            #form.edit #save_button,#form.edit #cancel_button{
+                display: inline;
+            }
+            #form.edit #edit_button{
+                display: none;
+            }
+            #form.edit input,#form.edit input:focus,#form.edit input:active{
+                border: 1px solid #ddd;
+            }
+        </style>
+        <script>
+            function edit(){
+                document.querySelector('#form').classList='edit';
+                const inputs = document.querySelectorAll('#form input');
+                inputs.forEach(element => {
+                    element.removeAttribute('readonly');
+                });
+            }
+            function cancel() {
+                location.reload();
+            }
+            function save() {
+                const url = "save";
+                fetch(url, {
+                    method : "POST",
+                    body: JSON.stringify({"name":"Ratikanta P"}),
+                    }).then(
+                        response => response.text()
+                    ).then(
+                        html => {
+                            console.log(html);
+                            location.reload();
+                        }
+                    );
+            }
+        </script>
+    </head>
+<body>
+<h1 style="text-align: center;">User Profile</h1>
+<img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202203/Dog_animal_abuse_1200x768.jpeg" />
+<div id="form">
+    <div><input type="text" name="name" placeholder="Full Name not Available" readonly /></div>
+    <div><input type="text" name="email" placeholder="Email  not Available" readonly /></div>
+    <div><input type="text" name="age" placeholder="Age  not Available" readonly /></div>
+    <div>
+        <button id="edit_button" onclick="edit()">Edit Profile</button>
+        <button id="cancel_button" onclick="cancel()">Cancel</button>
+        <button id="save_button" onclick="save()">Save</button>
+    </div>
+</div>
+</body>
+</html>
