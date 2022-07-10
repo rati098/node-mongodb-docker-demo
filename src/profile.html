@@ -30,6 +30,29 @@
             }
         </style>
         <script>
+            function loadData(){
+                fetch('get', {
+                    method : "GET",
+                    }).then(
+                        response => response.text()
+                    ).then(
+                        html => {
+                            const json = JSON.parse(html);
+                            document.querySelector('#server_host').innerHTML=json.host;
+                            if(json._id)
+                            localStorage.setItem('id',json._id);
+                            else
+                            localStorage.setItem('id','');
+                            if(json.name)
+                            document.querySelector('[name="name"]').value = json.name;
+                            if(json.email)
+                            document.querySelector('[name="email"]').value = json.email;
+                            if(json.age)
+                            document.querySelector('[name="age"]').value = json.age;
+                        }
+                    );
+
+            }
             function edit(){
                 document.querySelector('#form').classList='edit';
                 const inputs = document.querySelectorAll('#form input');
@@ -42,24 +65,34 @@
             }
             function save() {
                 const url = "save";
+                const data = {
+                    id: localStorage.getItem('id'),
+                    name: document.querySelector('[name="name"]').value,
+                    age: document.querySelector('[name="age"]').value,
+                    email: document.querySelector('[name="email"]').value
+                };
                 fetch(url, {
                     method : "POST",
-                    body: JSON.stringify({"name":"Ratikanta P"}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
                     }).then(
                         response => response.text()
                     ).then(
                         html => {
-                            console.log(html);
                             location.reload();
                         }
                     );
             }
+            loadData();
         </script>
     </head>
 <body>
 <h1 style="text-align: center;">User Profile</h1>
 <img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202203/Dog_animal_abuse_1200x768.jpeg" />
 <div id="form">
+    <h1>Server running on : <span id="server_host"></span></h1>
     <div><input type="text" name="name" placeholder="Full Name not Available" readonly /></div>
     <div><input type="text" name="email" placeholder="Email  not Available" readonly /></div>
     <div><input type="text" name="age" placeholder="Age  not Available" readonly /></div>
