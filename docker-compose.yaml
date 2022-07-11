@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   node-ms:
-    image: docker.io/ratipk96/node-ms
+    image: ratipk96/node-ms
     ports:
       - 3000:3000
     environment:
