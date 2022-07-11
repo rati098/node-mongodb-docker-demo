@@ -1,5 +1,11 @@
 version: '3.8'
 services:
+  node-ms:
+    image: 219865508293.dkr.ecr.us-east-1.amazonaws.com/node-ms:1.0
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URL=mongodb://admin:admin@mongodb/?retryWrites=true&w=majority
   mongodb:
     image: mongo
     ports:
@@ -8,7 +14,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=admin
     volumes:
-      - mongo-data: /data/db
+      - mongo-data:/data/db
   mongo-express:
     image: mongo-express
     ports:
